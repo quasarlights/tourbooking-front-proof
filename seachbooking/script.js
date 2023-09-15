@@ -98,3 +98,24 @@ resultsSelect.addEventListener("change", () => {
     showLocalStorageOptions();
 });
 
+kids.addEventListener("change", ()=>{
+    // Almacena las opciones seleccionadas en el Local Storage
+    localStorage.setItem("kids", kids.value);
+
+});
+
+adults.addEventListener("change", ()=>{
+    // Almacena las opciones seleccionadas en el Local Storage
+    localStorage.setItem("adults", adults.value);
+
+});
+
+calendar.addEventListener("change", ()=>{
+    // Almacena las opciones seleccionadas en el Local Storage
+    localStorage.setItem("calendar", calendar.value);
+
+});
+
+submit.addEventListener("click", (event)=>{
+    
+})
