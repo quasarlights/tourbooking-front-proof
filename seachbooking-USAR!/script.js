@@ -17,6 +17,7 @@ submit.addEventListener(click, submitFunction());{
 let categorySelect = document.getElementById("category");
 
 // Realiza la solicitud fetch como lo hiciste antes
+/*
 fetch("http://localhost:8080/category")
 .then((response) => {
     return response.json();
@@ -36,7 +37,7 @@ fetch("http://localhost:8080/category")
 .catch((error) => {
     console.error("Error al obtener las categorías:", error);
 });
-
+*/
 // script.js
 
 // Obtén una referencia al campo de entrada y al elemento select
@@ -68,7 +69,7 @@ searchInput.addEventListener("input", () => {
             // Agrega cada nombre como una opción en el select
             data.forEach((result) => {
                 const resultOption = document.createElement("option");
-                resultOption.value = result.id+"-"+result.name;
+                resultOption.value = result.id;
                 resultOption.textContent =result.id +"/"+ result.name;
                 resultsSelect.appendChild(resultOption);
             });
@@ -92,30 +93,71 @@ resultsSelect.addEventListener("change", () => {
     }
 
     // Almacena las opciones seleccionadas en el Local Storage
-    localStorage.setItem("selectedOptions", JSON.stringify(selectedOptions));
+    localStorage.setItem("ids", JSON.stringify(selectedOptions));
 
     // Muestra las opciones seleccionadas en el cuerpo del documento
-    showLocalStorageOptions();
+    //showLocalStorageOptions();
 });
 
 kids.addEventListener("change", ()=>{
     // Almacena las opciones seleccionadas en el Local Storage
-    localStorage.setItem("kids", kids.value);
+    localStorage.setItem("kidsTickets", kids.value);
 
 });
 
 adults.addEventListener("change", ()=>{
     // Almacena las opciones seleccionadas en el Local Storage
-    localStorage.setItem("adults", adults.value);
+    localStorage.setItem("adultsTickets", adults.value);
 
 });
 
 calendar.addEventListener("change", ()=>{
     // Almacena las opciones seleccionadas en el Local Storage
-    localStorage.setItem("calendar", calendar.value);
+    localStorage.setItem("date", calendar.value);
 
 });
 
-submit.addEventListener("click", (event)=>{
+submit.addEventListener('click', fetchDataFromAPI);
     
-})
+
+
+function fetchDataFromAPI(event) {
+    event.preventDefault(); // Evitar la recarga de la página
+
+    // Obtener los parámetros del Local Storage
+    const ids = localStorage.getItem('ids');
+    const adultsTickets = localStorage.getItem('adultsTickets');
+    const kidsTickets = localStorage.getItem('kidsTickets');
+    const date = localStorage.getItem('date');
+
+    // Convertir los valores de ids a un formato adecuado (suponiendo que están en un formato de matriz)
+    const idsArray = JSON.parse(ids); // Parsear la cadena JSON a un array
+
+    // Construir la URL del API con los valores correctos
+    const apiUrl = `http://localhost:8080/availability/byticketanddate?ids=${idsArray.join(',')}&adultsTickets=${adultsTickets}&kidsTickets=${kidsTickets}&date=${date}`;
+
+    // Realizar la solicitud fetch
+    fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la solicitud');
+            }
+            return response.text(); // Leer la respuesta como texto
+        })
+        .then(data => {
+            try {
+                // Intentar analizar la respuesta JSON solo si no está vacía
+                if (data.trim() !== '') {
+                    const resultDiv = document.getElementById('result');
+                    resultDiv.innerHTML = JSON.stringify(JSON.parse(data), null, 2);
+                } else {
+                    console.error('La respuesta está vacía');
+                }
+            } catch (error) {
+                console.error('Error al analizar la respuesta JSON:', error);
+            }
+        })
+        .catch(error => {
+            console.error('Error al obtener datos del API:', error);
+        });
+}
