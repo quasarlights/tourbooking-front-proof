@@ -1,9 +1,9 @@
-let search= document.getElementById("search")
-let category= document.getElementById("category")
-let adults= document.getElementById("adults")
-let kids= document.getElementById("kids")
-let calendar= document.getElementById("calendar")
-let submit= document.getElementById("submit")
+let search = document.getElementById("search")
+let category = document.getElementById("category")
+let adults = document.getElementById("adults")
+let kids = document.getElementById("kids")
+let calendar = document.getElementById("calendar")
+let submit = document.getElementById("submit")
 /*
 submit.addEventListener(click, submitFunction());{
 
@@ -70,7 +70,7 @@ searchInput.addEventListener("input", () => {
             data.forEach((result) => {
                 const resultOption = document.createElement("option");
                 resultOption.value = result.id;
-                resultOption.textContent =result.id +"/"+ result.name;
+                resultOption.textContent = result.id + "/" + result.name;
                 resultsSelect.appendChild(resultOption);
             });
         })
@@ -99,26 +99,26 @@ resultsSelect.addEventListener("change", () => {
     //showLocalStorageOptions();
 });
 
-kids.addEventListener("change", ()=>{
+kids.addEventListener("change", () => {
     // Almacena las opciones seleccionadas en el Local Storage
     localStorage.setItem("kidsTickets", kids.value);
 
 });
 
-adults.addEventListener("change", ()=>{
+adults.addEventListener("change", () => {
     // Almacena las opciones seleccionadas en el Local Storage
     localStorage.setItem("adultsTickets", adults.value);
 
 });
 
-calendar.addEventListener("change", ()=>{
+calendar.addEventListener("change", () => {
     // Almacena las opciones seleccionadas en el Local Storage
     localStorage.setItem("date", calendar.value);
 
 });
 
 submit.addEventListener('click', fetchDataFromAPI);
-    
+
 
 
 function fetchDataFromAPI(event) {
